@@ -62,3 +62,56 @@ resource "aws_main_route_table_association" "taa-rta-default" {
   vpc_id         = aws_vpc.taa-vpc.id
   route_table_id = aws_route_table.taa-rt-pub-main.id
 }
+
+#Create a "base" security group to be assigned to all EC2 instances
+resource "aws_security_group" "taa-sg-base-ec2" {
+  name   = "taa-sg-ssh-ec2"
+  vpc_id = aws_vpc.taa-vpc.id
+}
+
+#DANGEROUS!!
+#Allow access from the Internet to port 22 (SSH) in the EC2 instances
+resource "aws_security_group_rule" "taa-sr-internet-to-ec2-ssh" {
+  security_group_id = aws_security_group.taa-sg-base-ec2.id
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"] # Internet
+}
+
+# Allow access from the internet for ICMP protocol (e.g. ping) to the EC2 instances
+resource "aws_security_group_rule" "taa-sr-internet-to-ec2-icmp" {
+  security_group_id = aws_security_group.taa-sg-base-ec2.id
+  type              = "ingress"
+  from_port         = -1
+  to_port           = -1
+  protocol          = "icmp"
+  cidr_blocks       = ["0.0.0.0/0"] # Internet
+}
+
+# Allow all outbound traffic to the internet
+resource "aws_security_group_rule" "taa-sr-all-outbound" {
+  security_group_id = aws_security_group.taa-sg-base-ec2.id
+  type              = "egress"
+  from_port         = "0"
+  to_port           = "0"
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
+# Create a security group for the Front end Server
+resource "aws_security_group" "taa-sg-front-end" {
+  name              = "taa-sg-front-end"
+  vpc_id            = aws_vpc.taa-vpc.id
+}
+
+# Allow access from the Internet to port 80 in the ec2 instances
+resource "aws_security_group_rule" "taa-sr-internet-to-front-end-80" {
+  security_group_id           = aws_security_group.taa-sg-front-end.id
+  type                        = "ingress"
+  from_port                   = 80
+  to_port                     = 80
+  protocol                    = "tcp"
+  cidr_blocks                 = ["0.0.0.0/0"] # Internet
+}

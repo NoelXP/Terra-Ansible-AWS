@@ -102,16 +102,16 @@ resource "aws_security_group_rule" "taa-sr-all-outbound" {
 
 # Create a security group for the Front end Server
 resource "aws_security_group" "taa-sg-front-end" {
-  name              = "taa-sg-front-end"
-  vpc_id            = aws_vpc.taa-vpc.id
+  name   = "taa-sg-front-end"
+  vpc_id = aws_vpc.taa-vpc.id
 }
 
 # Allow access from the Internet to port 80 in the ec2 instances
 resource "aws_security_group_rule" "taa-sr-internet-to-front-end-80" {
-  security_group_id           = aws_security_group.taa-sg-front-end.id
-  type                        = "ingress"
-  from_port                   = 80
-  to_port                     = 80
-  protocol                    = "tcp"
-  cidr_blocks                 = ["0.0.0.0/0"] # Internet
+  security_group_id = aws_security_group.taa-sg-front-end.id
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"] # Internet
 }

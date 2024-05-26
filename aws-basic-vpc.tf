@@ -115,3 +115,19 @@ resource "aws_security_group_rule" "taa-sr-internet-to-front-end-80" {
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"] # Internet
 }
+
+# Create a security group for the Back end Server
+resource "aws_security_group" "taa-sg-back-end" {
+  name   = "taa-sg-back-end"
+  vpc_id = aws_vpc.taa-vpc.id
+}
+
+# Allow access from the front-end to the port 3306 in the backend (MariaDB)
+resource "aws_security_group_rule" "taa-sr-front-end-to-mariadb" {
+  security_group_id        = aws_security_group.taa-sg-back-end.id
+  type                     = "ingress"
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.taa-sg-front-end.id
+}

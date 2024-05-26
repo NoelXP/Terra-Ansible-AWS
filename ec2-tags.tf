@@ -27,8 +27,8 @@ resource "aws_instance" "taa-ec-back-end-001" {
   key_name              = aws_key_pair.taa-kp-config-user.key_name
   vpc_security_group_ids = [aws_security_group.taa-sg-base-ec2.id, aws_security_group.taa-sg-back-end.id]
     tags = {
-        Name         = "taa-ec-back-end-001"
-        private_name = "taa-ec-back-end-001"
+        Name         = "taa-ec-back-end-123"
+        private_name = "taa-ec-back-end-123"
         public_name  = "server"
         app          = "back-end"
         app_ver      = "1.2"

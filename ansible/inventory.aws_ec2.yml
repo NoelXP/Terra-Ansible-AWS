@@ -1,0 +1,26 @@
+# AWS Ansible Inventory Plugin Configuration file
+# See options: https://docs.ansible.com/ansible/latest/plugins/inventory/aws_ec2.html
+plugin: amazon.aws.aws_ec2
+cache: false
+use_ssm_inventory: true
+
+# Limit query to specific regions
+regions:
+  - us-east-2
+
+# A named AWS profile to use for authentication
+profile: default
+
+# Create Ansible hosts groups using the following elements:]
+keyed_groups:
+  - prefix: tag
+    key: tags
+  - prefix: instance_type
+    key: instance_type
+
+hostnames:
+  - tag:private_name
+
+compose:
+  ansible_host: public_ip_address
+

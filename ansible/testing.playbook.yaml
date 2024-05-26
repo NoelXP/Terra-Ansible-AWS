@@ -1,9 +1,9 @@
 - name: All hosts
-   hosts: all
-   remote_user: ubuntu
-   tasks:
-     - name: Ping all
-       ansible.builtin.ping:
+  hosts: all
+  remote_user: ubuntu
+  tasks:
+    - name: Ping all
+      ansible.builtin.ping:
 
 - name: One host, by name
   hosts: taa-ec-front-end-001
@@ -17,7 +17,7 @@
   remote_user: ubuntu
   tasks:
     - name: Ping
-      ansible.builtin.ping: 
+      ansible.builtin.ping:
 
 - name: One group, hosts in group Cost Center blue_department
   hosts: tag_cost_center_blue_department

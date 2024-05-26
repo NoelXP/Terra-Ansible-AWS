@@ -1,0 +1,48 @@
+ - name: All hosts
+   hosts: all
+   remote_user: ubuntu
+   tasks:
+     - name: Ping all
+       ansible.builtin.ping:
+
+- name: One host, by name
+  hosts: taa-ec-front-end-001
+  remote_user: ubuntu
+  tasks:
+    - name: Ping
+      ansible.builtin.ping:
+
+- name: Multiple Hosts, by name
+  hosts: taa-ec-front-end-001:taa-ec-back-end-123
+  remote_user: ubuntu
+  tasks:
+    - name: Ping
+      ansible.builtin.ping: 
+
+- name: One group, hosts in group Cost Center blue_department
+  hosts: tag_cost_center_blue_department
+  remote_user: ubuntu
+  tasks:
+    - name: Ping
+      ansible.builtin.ping:
+
+- name: Multiple groups, hosts in groups Cost Center blue_department or in green_department
+  hosts: tag_cost_center_blue_department:tag_cost_center_green_department
+  remote_user: ubuntu
+  tasks:
+    - name: Ping
+      ansible.builtin.ping:
+
+- name: Excluding hosts, all hosts except those in group Cost Center blue_department
+  hosts: tag_environment_production:!instance_type_t4g_small
+  remote_user: ubuntu
+  tasks:
+    - name: Ping
+      ansible.builtin.ping:
+
+- name: Intersection of groups, all hosts running Ubuntu version 23.04 (AWS hosts with tag os=ubuntu AND tag os_ver=23_04)
+  hosts: tag_os_ubuntu:&tag_os_ver_23_04
+  remote_user: ubuntu
+  tasks:
+    - name: Ping
+      ansible.builtin.ping:
